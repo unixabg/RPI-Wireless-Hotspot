@@ -131,7 +131,11 @@ else
 			echo "Invalid entry received of ${_CHANNEL} ."
 		fi
 	done
-	sed -e "s/${DEFAULTPWD}/${_PASSWORD1}/g" -e "s/${DEFAULTSSID}/${_SSID}/g" -e "s/channel=${DEFAULTCHANNEL}/channel=${_CHANNEL}/g" ./config-files/hostapd.conf > /etc/hostapd/hostapd.conf
+        CONTENTS=$(<./config-files/hostapd.conf)
+        CONTENTS=${CONTENTS//${DEFAULTPWD}/${_PASSWORD1}}
+        CONTENTS=${CONTENTS//${DEFAULTSSID}/${_SSID}}
+        CONTENTS=${CONTENTS//${DEFAULTCHANNEL}/${_CHANNEL}}
+	echo "${CONTENTS}" > /etc/hostapd/hostapd.conf
 fi
 cp ./config-files/hostapd /etc/default
 
